@@ -25,7 +25,7 @@ export function Hero() {
           </h1>
           <p style={{
             fontSize: '1.5rem', // Adjust font size as needed
-            color: 'black', // Change text color to white for contrast
+            color: 'red', // Change text color to white for contrast
             marginBottom: '2rem', // Space below the first paragraph
           }}>
             Restore finger sensitivity and enhance improve memory through innovative touch therapy.
