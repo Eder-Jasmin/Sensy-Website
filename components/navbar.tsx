@@ -34,8 +34,8 @@ export const Navbar = () => {
       top: 0, 
       width: '100%', 
       background: isScrolled 
-        ? 'linear-gradient(90deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.6) 10%, rgba(211, 211, 211,0.6) 30%, rgba(169, 169, 169,0.6) 50%, rgba(211, 211, 211,0.6) 70%, rgba(255,255,255,0.6) 90%, rgba(255,255,255,0.6) 100%)'  // 60% transparent when scrolled
-        : 'linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 10%, rgba(211, 211, 211,0.9) 30%, rgba(169, 169, 169,0.9) 50%, rgba(211, 211, 211,0.9) 70%, rgba(255,255,255,0.9) 90%, rgba(255,255,255,0.9) 100%)',
+        ? 'rgba(255,255,255,0.4)'  // 60% transparent when scrolled
+        : 'rgba(255,255,255,0.4)',
       transition: 'background 0.3s ease',  // Smooth transition
       padding: '1.4rem', 
       zIndex: 1000 

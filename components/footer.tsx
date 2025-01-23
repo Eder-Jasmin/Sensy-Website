@@ -7,7 +7,7 @@ import { Instagram, Facebook, Twitter } from 'lucide-react'
 
 export function Footer() {
   return (
-    <footer style={{ backgroundColor: '#1c2127', color: 'white', padding: '4rem 0' }}>
+    <footer style={{ backgroundColor: 'rgb(94, 145, 59)', color: 'white', padding: '4rem 0' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <p style={{ fontSize: '1.25rem' }}>
