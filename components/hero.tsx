@@ -69,7 +69,7 @@ export function Hero() {
 
      {/* Second Section */}
      <div style={{ backgroundColor:'white', position: 'relative', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <img src="/Hand_Top.png" alt="Top Hand" style={{ maxWidth: '40%', height: 'auto', position: 'absolute', top: '0', left: '0' }} />
+        <img src="/Hand_Top.png" alt="Top Hand" style={{ maxWidth: '38%', height: 'auto', position: 'absolute', top: '0', left: '0' }} />
         <img src="/Hand_Bottom.png" alt="Bottom Hand" style={{ maxWidth: '40%', height: 'auto', position: 'absolute', bottom: '0', right: '0' }} />
         <h2 style={{
           fontWeight: 'bold',
@@ -99,7 +99,7 @@ export function Hero() {
             src="/Hand_Front.png" // Your brain and hands image
             alt="Brain and hands illustration"
             style={{
-              maxWidth: '80%', // Ensure it fits within the container
+              maxWidth: '90%', // Ensure it fits within the container
               height: 'auto',
               objectFit: 'contain'
             }}
