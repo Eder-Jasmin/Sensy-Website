@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
+import { Link as ScrollLink } from 'react-scroll';
 import Link from "next/link"
 
 export const Navbar = () => {
@@ -34,8 +35,8 @@ export const Navbar = () => {
       top: 0, 
       width: '100%', 
       background: isScrolled 
-        ? 'rgba(255,255,255,0.4)'  // 60% transparent when scrolled
-        : 'rgba(255,255,255,0.4)',
+        ? 'rgba(255,255,255,0.5)'  
+        : 'rgba(255,255,255)',
       transition: 'background 0.3s ease',  // Smooth transition
       padding: '1.4rem', 
       zIndex: 1000 
@@ -53,12 +54,12 @@ export const Navbar = () => {
           display: 'flex', 
           alignItems: 'center',
           position: 'absolute',
-          left: '1.5rem',
+          left: '3rem',
         }}>
           <img 
-            src="/LOGO_mouse.png" 
+            src="/Fingerprint_S.png" 
             alt="Sensy Logo" 
-            style={{ height: '62px', width: 'auto' }}
+            style={{ height: '48px', width: 'auto' }}
           />
         </a>
         <nav style={{ 
@@ -66,9 +67,39 @@ export const Navbar = () => {
           gap: '3rem',
           margin: 'auto',
         }}>
-          <span onClick={() => handleTextClick(0)} style={{ cursor: 'pointer', color: getTextColor(0) }}>TECHNOLOGY</span>
-          <span onClick={() => handleTextClick(1)} style={{ cursor: 'pointer', color: getTextColor(1) }}>ABOUT US</span>
-          <span onClick={() => handleTextClick(2)} style={{ cursor: 'pointer', color: getTextColor(2) }}>RESEARCH</span>
+          <ScrollLink 
+            to="technology-section"
+            spy={true}
+            smooth={true}
+            offset={0}
+            duration={500}
+            onClick={() => handleTextClick(0)}
+            style={{ cursor: 'pointer', color: getTextColor(0), fontWeight: 'bold'}}
+          >
+            TECHNOLOGY
+          </ScrollLink>
+          <ScrollLink 
+            to="research-section"
+            spy={true}
+            smooth={true}
+            offset={0}
+            duration={500}
+            onClick={() => handleTextClick(1)}
+            style={{ cursor: 'pointer', color: getTextColor(1), fontWeight: 'bold' }}
+          >
+            RESEARCH
+          </ScrollLink>
+          <ScrollLink 
+            to="about-section"
+            spy={true}
+            smooth={true}
+            offset={0}
+            duration={500}
+            onClick={() => handleTextClick(2)}
+            style={{ cursor: 'pointer', color: getTextColor(2), fontWeight: 'bold' }}
+          >
+            ABOUT US
+          </ScrollLink>
         </nav>
         <div style={{ display: 'flex', gap: '1rem'}}>
           <button style={{ 
