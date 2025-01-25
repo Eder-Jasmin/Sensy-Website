@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Add this at the top of the file, outside the component
 const bounceKeyframes = `
@@ -30,63 +30,88 @@ const bounceKeyframes = `
 `;
 
 export function Hero() {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isTopHovered, setIsTopHovered] = useState(false);
-  const [isBottomHovered, setIsBottomHovered] = useState(false);
   const [isTextHovered, setIsTextHovered] = useState(false);
+  const [bubbles, setBubbles] = useState<string[]>([]);
+  const [bubblesShown, setBubblesShown] = useState(false); // Flag to track if bubbles have been shown
+
+  const bubbleWords = ["Innovate", "Engage", "Transform", "Succeed"]; // Words for the bubbles
+  const bubblePositions = [
+    { right: '20rem', top: '8rem' },   // Position for "Innovate"
+    { right: '8rem', top: '10rem' },   // Position for "Engage"
+    { right: '-25rem', top: '-8rem' },   // Position for "Transform"
+    { right: '-13rem', top: '-12rem' }    // Position for "Succeed"
+  ];
+
+  const showBubbles = () => {
+    if (!bubblesShown) { // Only show bubbles if they have not been displayed yet
+      bubbleWords.forEach((word, index) => {
+        setTimeout(() => {
+          setBubbles((prev) => [...prev, word]); // Add word to bubbles after a delay
+        }, index * 800); // Increase delay to 800ms for a slower appearance
+      });
+      setBubblesShown(true); // Set the flag to true after showing bubbles
+    }
+  };
+
+  const hideBubbles = () => {
+    if (bubblesShown) { // Only clear bubbles if they are currently shown
+      setBubbles([]); // Clear bubbles
+      setBubblesShown(false); // Reset the flag
+    }
+  };
 
   return (
-    <section style={{ background: '#B0ACAC',height:'100%',width: '100%', padding: '0', margin: '0'}}>
+    <section style={{ background: '#B0ACAC', height: '100%', width: '100%', padding: '0', margin: '0' }}>
       {/* First Section */}
       <div style={{
         display: 'flex',
-        flexDirection: 'row', // Align items in a row
-        alignItems: 'center', // Center vertically
+        flexDirection: 'row',
+        alignItems: 'center',
         width: '100%',
         justifyContent: 'center',
         height: '100vh',
         padding: '5rem',
         margin: '0 auto',
       }}>
-        <div style={{ flex: '1', textAlign: 'left'}}>
-        <img src="/Sensy_Bg.png" alt="Sensy" style={{ maxWidth: '300px', height: 'auto', marginTop: '3rem', marginBottom: '2rem'}} />
+        <div style={{ flex: '1', textAlign: 'left' }}>
+          <img src="/Sensy_Bg.png" alt="Sensy" style={{ maxWidth: '300px', height: 'auto', marginTop: '3rem', marginBottom: '2rem' }} />
           <p style={{
-            fontSize: '1.5rem', // Adjust font size as needed
-            color: 'white', // Change text color to white for contrast
-            marginBottom: '2rem', // Space below the first paragraph
+            fontSize: '1.5rem',
+            color: 'white',
+            marginBottom: '2rem',
           }}>
             Restore finger sensitivity and improve memory through innovative touch therapy.
           </p>
           <p style={{
-            fontSize: '1.2rem', // Adjust font size as needed
-            color: '#696969', // Change text color to white for contrast
-            marginBottom: '3.5rem', // Increased space below the last paragraph
+            fontSize: '1.2rem',
+            color: '#696969',
+            marginBottom: '3.5rem',
           }}>
-           By combining intelligent techniques with engaging and interactive games, Sensy turns rehabilitation into an enjoyable experience.
+            By combining intelligent techniques with engaging and interactive games, Sensy turns rehabilitation into an enjoyable experience.
           </p>
           <div style={{ display: 'flex', gap: '1rem' }}>
             <button style={{
               padding: '0.8rem 1.5rem',
-              backgroundColor: 'rgb(94, 145, 59)', // Green color for "Get Started"
+              backgroundColor: 'rgb(94, 145, 59)',
               color: 'white',
               border: 'none',
-              borderRadius: '4px' // Rounded corners
+              borderRadius: '4px'
             }}>Get Started</button>
-            <button style={{ 
+            <button style={{
               padding: '0.8rem',
               backgroundColor: '#DDDBDB',
-              border: '1px solid rgb(94, 145, 59)', // Green border
-              borderRadius: '4px', // Rounded corners
-              color: 'rgb(94, 145, 59)', // Text color can also be green
+              border: '1px solid rgb(94, 145, 59)',
+              borderRadius: '4px',
+              color: 'rgb(94, 145, 59)',
             }}>Watch Demo</button>
           </div>
         </div>
         <div style={{ flex: '1', display: 'flex', justifyContent: 'right' }}>
-          <img 
-            src="/PC_Hand.png" // Your brain and hands image
+          <img
+            src="/PC_Hand.png"
             alt="Brain and hands illustration"
             style={{
-              maxWidth: '85%', // Ensure it fits within the container
+              maxWidth: '85%',
               height: 'auto',
               objectFit: 'contain'
             }}
@@ -94,160 +119,164 @@ export function Hero() {
         </div>
       </div>
 
-     {/* Second Section */}
-     <div id="technology-section" style={{ backgroundColor:'white', position: 'relative', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      {/* Top Hand */}
-      <div 
-        style={{ 
-          position: 'absolute',
-          top: '3.5rem',
-          left: '3rem',
-          cursor: 'pointer'
-        }}
-        onMouseEnter={() => setIsTopHovered(true)}
-        onMouseLeave={() => setIsTopHovered(false)}
-      >
-        <img 
-          src="/Hand_Top.png" 
-          alt="Top Hand" 
-          style={{ 
-            maxWidth: '36%', 
-            height: 'auto',
-            transform: isTopHovered ? 'scale(1.05)' : 'scale(1)',
-            transition: 'transform 0.3s ease',
-            animation: isTopHovered ? 'none' : 'pulsate 2s ease-in-out infinite'
-          }} 
-        />
-        <div style={{
-          position: 'absolute',
-          top: '100%',  // Position below the image
-          left: '150px',    // Changed from '50px' to '150px' to move further right
-          width: '300px',    // Increased width
-          height: '150px',   // Decreased height
-          borderRadius: '50%',
-          backgroundColor: '#B0ACAC',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          opacity: isTopHovered ? 1 : 0,
-          transition: 'opacity 0.3s ease',
-          padding: '2rem',
-          zIndex: 2
-        }}>
-          <p style={{
-            color: 'white',
-            textAlign: 'center',
-            fontSize: '1.2rem'
-          }}>
-            We combine haptic and visual feedback with AI based games
-          </p>
+      {/* Second Section */}
+      <div id="technology-section" style={{ backgroundColor: 'white', position: 'relative', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }} 
+           onMouseEnter={showBubbles} 
+           onMouseLeave={hideBubbles}>
+        {/* Bubbles */}
+        <div style={{ position: 'absolute', display: 'flex', gap: '1rem' }}>
+          {bubbles.map((bubble, index) => (
+            <div key={index} style={{
+              backgroundColor: '#B0ACAC', // Same color as the first section
+              color: 'white',
+              padding: '1rem',
+              borderRadius: '50%', // Make it circular
+              width: index % 2 === 0 ? '90px' : '120px', // Increase size for even and odd
+              height: index % 2 === 0 ? '90px' : '120px', // Match width for circular shape
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              opacity: 0.9,
+              transition: 'opacity 0.3s ease',
+              animation: 'fadeIn 0.5s forwards',
+              animationDelay: `${index * 0.5}s`, // Delay for each bubble
+              position: 'absolute',
+              right: bubblePositions[index].right,
+              top: bubblePositions[index].top,
+            }}>
+              {bubble}
+            </div>
+          ))}
         </div>
-      </div>
 
-      {/* Bottom Hand */}
-      <div 
-        style={{ 
-          position: 'absolute',
-          bottom: '1rem',
-          left: '50rem',  // Changed from 40rem to 30rem to move further left
-          cursor: 'pointer'
-        }}
-        onMouseEnter={() => setIsBottomHovered(true)}
-        onMouseLeave={() => setIsBottomHovered(false)}
-      >
-        <div style={{
-          position: 'absolute',
-          bottom: '110%',  // Position above the image
-          right: '200px',    // Changed from '50px' to '150px' to move further right
-          width: '300px',    // Increased width
-          height: '150px',   // Decreased height
-          borderRadius: '50%',
-          backgroundColor: '#B0ACAC',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          opacity: isBottomHovered ? 1 : 0,
-          transition: 'opacity 0.3s ease',
-          padding: '2rem',
-          zIndex: 2,
-          marginBottom: '20px'
-        }}>
-          <h3 style={{
-            color: 'white',
-            fontSize: '1.2rem',
-            marginBottom: '0.8rem'
+        {/* Top Hand */}
+        <div style={{ position: 'absolute', top: '3.5rem', left: '3rem', cursor: 'pointer' }}>
+          <img
+            src="/Hand_Top.png"
+            alt="Top Hand"
+            style={{
+              maxWidth: '36%',
+              height: 'auto',
+              transition: 'transform 0.3s ease',
+            }}
+          />
+          <div style={{
+            position: 'absolute',
+            top: '100%',
+            left: '150px',
+            width: '300px',
+            height: '150px',
+            borderRadius: '50%',
+            backgroundColor: '#B0ACAC',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            opacity: 0,
+            transition: 'opacity 0.3s ease',
+            padding: '2rem',
+            zIndex: 2
           }}>
-            Interactive Training
-          </h3>
-          <p style={{
-            color: 'white',
-            textAlign: 'center'
-          }}>
-            Engaging exercises designed to enhance sensory perception
-          </p>
+            <p style={{
+              color: 'white',
+              textAlign: 'center',
+              fontSize: '1.2rem'
+            }}>
+              We combine haptic and visual feedback with AI based games
+            </p>
+          </div>
         </div>
-        <img 
-          src="/Hand_Bottom.png" 
-          alt="Bottom Hand" 
-          style={{ 
-            maxWidth: '98%',
-            height: 'auto',
-            transform: isBottomHovered ? 'scale(1.05)' : 'scale(1)',
-            transition: 'transform 0.3s ease',
-            animation: isBottomHovered ? 'none' : 'pulsate 2s ease-in-out infinite'
-          }} 
-        />
-      </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <h2 
-          style={{
-            fontWeight: 'bold',
+        {/* Bottom Hand */}
+        <div style={{ position: 'absolute', bottom: '1rem', left: '50rem', cursor: 'pointer' }}>
+          <div style={{
             position: 'absolute',
-            color: '#B0ACAC',
-            fontSize: '4rem',
-            textAlign: 'center',
-            zIndex: 1,
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-          }}
-          onMouseEnter={() => setIsTextHovered(true)}
-          onMouseLeave={() => setIsTextHovered(false)}
-        >
-          Technology
-        </h2>
+            bottom: '110%',
+            right: '200px',
+            width: '300px',
+            height: '150px',
+            borderRadius: '50%',
+            backgroundColor: '#B0ACAC',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            opacity: 0,
+            transition: 'opacity 0.3s ease',
+            padding: '2rem',
+            zIndex: 2,
+            marginBottom: '20px'
+          }}>
+            <h3 style={{
+              color: 'white',
+              fontSize: '1.2rem',
+              marginBottom: '0.8rem'
+            }}>
+              Interactive Training
+            </h3>
+            <p style={{
+              color: 'white',
+              textAlign: 'center'
+            }}>
+              Engaging exercises designed to enhance sensory perception
+            </p>
+          </div>
+          <img
+            src="/Hand_Bottom.png"
+            alt="Bottom Hand"
+            style={{
+              maxWidth: '98%',
+              height: 'auto',
+              transition: 'transform 0.3s ease',
+            }}
+          />
+        </div>
 
-        <div 
-          onClick={() => {
-            const nextSection = document.getElementById('tech-section');
-            nextSection?.scrollIntoView({ behavior: 'smooth' });
-          }}
-          style={{
-            position: 'absolute',
-            bottom: '2rem',
-            cursor: 'pointer',
-            animation: 'bounce 1.5s infinite',
-            zIndex: 1
-          }}
-        >
-          <svg 
-            width="50"
-            height="50"
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="#B0ACAC"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h2
+            style={{
+              fontWeight: 'bold',
+              position: 'absolute',
+              color: '#B0ACAC',
+              fontSize: '4rem',
+              textAlign: 'center',
+              zIndex: 1,
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+            }}
           >
-            <path d="M7 13l5 5 5-5"/>
-            <path d="M7 6l5 5 5-5"/>
-          </svg>
+            Technology
+          </h2>
+
+          <div
+            onClick={() => {
+              const nextSection = document.getElementById('tech-section');
+              nextSection?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            style={{
+              position: 'absolute',
+              bottom: '2rem',
+              cursor: 'pointer',
+              animation: 'bounce 1.5s infinite',
+              zIndex: 1
+            }}
+          >
+            <svg
+              width="50"
+              height="50"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#B0ACAC"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M7 13l5 5 5-5" />
+              <path d="M7 6l5 5 5-5" />
+            </svg>
+          </div>
         </div>
       </div>
-    </div>
 
       {/* Third Section */}
       <div id="tech-section" style={{
@@ -274,8 +303,6 @@ export function Hero() {
               height: 'auto',
               overflow: 'hidden'
             }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
           >
             <img 
               src="/Hand_Front.png"
@@ -284,7 +311,7 @@ export function Hero() {
                 width: '100%',
                 height: 'auto',
                 objectFit: 'contain',
-                transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                transform: 'scale(1)',
                 transition: 'transform 0.3s ease'
               }}
             />
@@ -299,7 +326,7 @@ export function Hero() {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              opacity: isHovered ? 1 : 0,
+              opacity: 0,
               transition: 'opacity 0.3s ease',
               padding: '2rem'
             }}>
@@ -431,7 +458,16 @@ export function Hero() {
         </div>
       </div>
 
-      <style jsx>{bounceKeyframes}</style>
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
     </section>
   );
 }
