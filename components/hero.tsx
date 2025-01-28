@@ -2,17 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 
-// Add this at the top of the file, outside the component
 const bounceKeyframes = `
   @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {
       transform: translateY(0);
     }
     40% {
-      transform: translateY(-15px);
+      transform: translateY(-10px);
     }
     60% {
-      transform: translateY(-7px);
+      transform: translateY(-5px);
     }
   }
 
@@ -31,10 +30,12 @@ const bounceKeyframes = `
 
 export function Hero() {
   const [isTextHovered, setIsTextHovered] = useState(false);
-  const [bubbles, setBubbles] = useState<string[]>([]);
-  const [bubblesShown, setBubblesShown] = useState(false); // Flag to track if bubbles have been shown
+  const [bubbles, setBubbles] = useState<string[]>(["Light", "Vibration", "AI", "Games"]); // State for bubbles
+  const [showImage, setShowImage] = useState<string | null>(null); // State to manage image visibility
+  const [isBouncing, setIsBouncing] = useState(true); // State for bouncing effect
+  const [currentBullet, setCurrentBullet] = useState(0); // State for current bullet point
 
-  const bubbleWords = ["Innovate", "Engage", "Transform", "Succeed"]; // Words for the bubbles
+  const bubbleWords = ["Light", "Vibration", "AI", "Games"]; // Words for the bubbles
   const bubblePositions = [
     { right: '20rem', top: '8rem' },   // Position for "Innovate"
     { right: '8rem', top: '10rem' },   // Position for "Engage"
@@ -42,23 +43,26 @@ export function Hero() {
     { right: '-13rem', top: '-12rem' }    // Position for "Succeed"
   ];
 
-  const showBubbles = () => {
-    if (!bubblesShown) { // Only show bubbles if they have not been displayed yet
-      bubbleWords.forEach((word, index) => {
-        setTimeout(() => {
-          setBubbles((prev) => [...prev, word]); // Add word to bubbles after a delay
-        }, index * 800); // Increase delay to 800ms for a slower appearance
-      });
-      setBubblesShown(true); // Set the flag to true after showing bubbles
-    }
+  const bulletWords = ["How is the vibration integrated?", "Where does the light come from?", "How are the rings adjustable?"]; // Bullet points
+
+  const handleMouseEnter = () => {
+    setIsBouncing(false); // Stop bouncing when hovered
   };
 
-  const hideBubbles = () => {
-    if (bubblesShown) { // Only clear bubbles if they are currently shown
-      setBubbles([]); // Clear bubbles
-      setBubblesShown(false); // Reset the flag
-    }
+  const handleMouseLeave = () => {
+    setIsBouncing(true); // Resume bouncing when mouse leaves
+    setShowImage(null); // Hide image when mouse leaves
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (isBouncing) {
+        setCurrentBullet((prev) => (prev + 1) % bulletWords.length); // Loop through bullet points
+      }
+    }, 1500); // Change bullet every 1.5 seconds for faster bouncing
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, [isBouncing]);
 
   return (
     <section style={{ background: '#B0ACAC', height: '100%', width: '100%', padding: '0', margin: '0' }}>
@@ -121,8 +125,7 @@ export function Hero() {
 
       {/* Second Section */}
       <div id="technology-section" style={{ backgroundColor: 'white', position: 'relative', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }} 
-           onMouseEnter={showBubbles} 
-           onMouseLeave={hideBubbles}>
+      >
         {/* Bubbles */}
         <div style={{ position: 'absolute', display: 'flex', gap: '1rem' }}>
           {bubbles.map((bubble, index) => (
@@ -137,9 +140,6 @@ export function Hero() {
               justifyContent: 'center',
               alignItems: 'center',
               opacity: 0.9,
-              transition: 'opacity 0.3s ease',
-              animation: 'fadeIn 0.5s forwards',
-              animationDelay: `${index * 0.5}s`, // Delay for each bubble
               position: 'absolute',
               right: bubblePositions[index].right,
               top: bubblePositions[index].top,
@@ -160,67 +160,10 @@ export function Hero() {
               transition: 'transform 0.3s ease',
             }}
           />
-          <div style={{
-            position: 'absolute',
-            top: '100%',
-            left: '150px',
-            width: '300px',
-            height: '150px',
-            borderRadius: '50%',
-            backgroundColor: '#B0ACAC',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            opacity: 0,
-            transition: 'opacity 0.3s ease',
-            padding: '2rem',
-            zIndex: 2
-          }}>
-            <p style={{
-              color: 'white',
-              textAlign: 'center',
-              fontSize: '1.2rem'
-            }}>
-              We combine haptic and visual feedback with AI based games
-            </p>
-          </div>
         </div>
 
         {/* Bottom Hand */}
         <div style={{ position: 'absolute', bottom: '1rem', left: '50rem', cursor: 'pointer' }}>
-          <div style={{
-            position: 'absolute',
-            bottom: '110%',
-            right: '200px',
-            width: '300px',
-            height: '150px',
-            borderRadius: '50%',
-            backgroundColor: '#B0ACAC',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            opacity: 0,
-            transition: 'opacity 0.3s ease',
-            padding: '2rem',
-            zIndex: 2,
-            marginBottom: '20px'
-          }}>
-            <h3 style={{
-              color: 'white',
-              fontSize: '1.2rem',
-              marginBottom: '0.8rem'
-            }}>
-              Interactive Training
-            </h3>
-            <p style={{
-              color: 'white',
-              textAlign: 'center'
-            }}>
-              Engaging exercises designed to enhance sensory perception
-            </p>
-          </div>
           <img
             src="/Hand_Bottom.png"
             alt="Bottom Hand"
@@ -235,17 +178,17 @@ export function Hero() {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <h2
             style={{
-              fontWeight: 'bold',
+
               position: 'absolute',
               color: '#B0ACAC',
-              fontSize: '4rem',
+              fontSize: '1.5rem',
               textAlign: 'center',
               zIndex: 1,
               cursor: 'pointer',
               transition: 'all 0.3s ease',
             }}
           >
-            Technology
+            Sensy integrates multi-sensory stimulation with an interactive AI-powered training assistant.
           </h2>
 
           <div
@@ -288,79 +231,129 @@ export function Hero() {
         margin: '0 auto',
         backgroundColor: '#B0ACAC',
         height: '100vh',
-      }}>
+        position: 'relative'
+      }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <div style={{ 
           flex: '1', 
           display: 'flex', 
-          justifyContent: 'center',
-          position: 'relative', // Add this for absolute positioning of overlay
-          cursor: 'pointer'     // Add pointer cursor on hover
+          justifyContent: 'flex-start',
+          position: 'relative'
         }}>
-          <div 
-            style={{ 
-              position: 'relative',
-              width: '90%',
+          <img 
+            src="/Hand_Front.png" 
+            alt="Brain and hands illustration" 
+            style={{
+              maxWidth: '480px',
               height: 'auto',
-              overflow: 'hidden'
-            }}
-          >
-            <img 
-              src="/Hand_Front.png"
-              alt="Brain and hands illustration"
-              style={{
-                width: '100%',
-                height: 'auto',
-                objectFit: 'contain',
-                transform: 'scale(1)',
-                transition: 'transform 0.3s ease'
-              }}
-            />
+              objectFit: 'contain',
+              position: 'relative',
+              top: '40px',
+            }} 
+          />
+          
+          {/* Centered Text */}
+          <div style={{
+            position: 'absolute',
+            top: '-5%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            color: 'white',
+            textAlign: 'center',
+            zIndex: 2,
+            maxWidth: '1000px',
+            width: '100%',
+          }}>
+            <h2 style={{
+              fontSize: '1.8em',
+              marginBottom: '1rem',
+            }}>
+              .... our customizable design ensures comfortable and effective training ....
+            </h2>
+          </div>
+
+          {/* Bullet Points */}
+          <ul style={{
+            fontSize: '1.5em',
+            listStyleType: 'disc',
+            paddingLeft: '50px', 
+            color: 'white',
+            paddingTop: '4rem',
+            lineHeight: '3',
+          }}>
+            {bulletWords.map((bullet, index) => (
+              <li 
+                key={index}
+                onMouseEnter={() => {
+                  setShowImage(index === 0 ? 'vibration' : index === 1 ? 'light' : index === 2 ? 'rings' : null);
+                  handleMouseEnter(); // Stop bouncing
+                }} 
+                onMouseLeave={handleMouseLeave}
+                style={{ 
+                  cursor: 'pointer', 
+                  animation: currentBullet === index && isBouncing ? 'bounce 1s infinite' : 'none', // Apply bounce animation
+                  transition: 'all 0.3s ease' // Smooth transition
+                }}
+              >
+                {bullet}
+              </li>
+            ))}
+          </ul>
+
+          {/* Image that appears on hover */}
+          {showImage === 'vibration' && (
             <div style={{
               position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.7)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              opacity: 0,
-              transition: 'opacity 0.3s ease',
-              padding: '2rem'
+              top: '55%',
+              left: '85%',
+              transform: 'translateY(-50%)',
+              zIndex: 2,
             }}>
-              <h3 style={{
-                color: 'white',
-                fontSize: '1.5rem',
-                marginBottom: '1rem'
-              }}>
-                Innovative Design
-              </h3>
-              <p style={{
-                color: 'white',
-                textAlign: 'center'
-              }}>
-                Our ergonomic design ensures maximum comfort and effectiveness during training sessions.
-              </p>
+              <img 
+                src="/Vibration_Arrow.png"
+                alt="Vibration integration"
+                style={{
+                  maxWidth: '150px',
+                  height: 'auto',
+                }} 
+              />
             </div>
-          </div>
-        </div>
-        <div style={{ flex: '1', textAlign: 'left' }}>
-          <p style={{
-            fontSize: '1.5rem', // Adjust font size as needed
-            color: 'white', // Change text color to black for contrast
-            marginBottom: '1rem', // Space below the first paragraph
-          }}>
-            Sensy is a training device that integrates multi-sensory stimulation with an interactive AI-powered learning assistant.
-          </p>
-          <p style={{
-            fontSize: '1.2rem', // Adjust font size as needed
-            color: '#696969', // Change text color to black for contrast
-            marginBottom: '3rem', // Increased space below the last paragraph
-          }}>
-            Sensy's customizable design adapts to different hand sizes, ensuring comfort and accessibility for every user.
-          </p>
+          )}
+          {showImage === 'light' && (
+            <div style={{
+              position: 'absolute',
+              top: '55%',
+              left: '85%',
+              transform: 'translateY(-50%)',
+              zIndex: 2,
+            }}>
+              <img 
+                src="/Light_Arrow.png" // Replace with the appropriate image path
+                alt="Light source"
+                style={{
+                  maxWidth: '170px',
+                  height: 'auto',
+                }} 
+              />
+            </div>
+          )}
+          {showImage === 'rings' && (
+            <div style={{
+              position: 'absolute',
+              top: '60%',
+              left: '85%',
+              transform: 'translateY(-50%)',
+              zIndex: 2,
+            }}>
+              <img 
+                src="/Spring_Effect.png" // Replace with the appropriate image path for the rings
+                alt="Rings adjustable"
+                style={{
+                  maxWidth: '170px',
+                  height: 'auto',
+                }} 
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -468,6 +461,7 @@ export function Hero() {
           }
         }
       `}</style>
+      <style jsx>{bounceKeyframes}</style>
     </section>
   );
 }
