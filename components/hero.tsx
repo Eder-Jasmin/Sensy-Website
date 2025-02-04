@@ -78,7 +78,9 @@ export function Hero() {
         margin: '0 auto',
       }}>
         <div style={{ flex: '1', textAlign: 'left' }}>
-          <img src="/Sensy_Bg.png" alt="Sensy" style={{ maxWidth: '300px', height: 'auto', marginTop: '3rem', marginBottom: '2rem' }} />
+          <a href="/" style={{ textDecoration: 'none' }}>
+            <img src="/Sensy_Bg.png" alt="Sensy" style={{ maxWidth: '300px', height: 'auto', marginTop: '3rem', marginBottom: '2rem' }} />
+          </a>
           <p style={{
             fontSize: '1.5rem',
             color: 'white',
@@ -94,20 +96,15 @@ export function Hero() {
             By combining intelligent techniques with engaging and interactive games, Sensy turns rehabilitation into an enjoyable experience.
           </p>
           <div style={{ display: 'flex', gap: '1rem' }}>
-            <button style={{
-              padding: '0.8rem 1.5rem',
-              backgroundColor: 'rgb(94, 145, 59)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px'
-            }}>Get Started</button>
-            <button style={{
-              padding: '0.8rem',
-              backgroundColor: '#DDDBDB',
-              border: '1px solid rgb(94, 145, 59)',
-              borderRadius: '4px',
-              color: 'rgb(94, 145, 59)',
-            }}>Watch Demo</button>
+            <a href="https://calendly.com/ej3497-mci4me/sensy-info-meeting" target="_blank" rel="noopener noreferrer">
+              <button style={{
+                padding: '0.8rem 1.5rem',
+                backgroundColor: 'rgb(94, 145, 59)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px'
+              }}>Book Info Meeting</button>
+            </a>
           </div>
         </div>
         <div style={{ flex: '1', display: 'flex', justifyContent: 'right' }}>

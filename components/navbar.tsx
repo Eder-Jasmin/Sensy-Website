@@ -1,15 +1,31 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
 import Link from "next/link"
 
 export const Navbar = () => {
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const modalRef = useRef<HTMLDivElement | null>(null); // Ref for the modal
 
   const handleTextClick = (index: number) => {
     setClickedIndex(index);
+  };
+
+  const handleJoinWaitlist = () => {
+    setIsModalOpen(true); // Open the modal
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // Close the modal
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    handleCloseModal(); // Close the modal after submission
   };
 
   useEffect(() => {
@@ -24,6 +40,23 @@ export const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close modal when clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        handleCloseModal();
+      }
+    };
+
+    if (isModalOpen) {
+      window.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      window.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isModalOpen]);
 
   const getTextColor = (index: number) => {
     return clickedIndex === index ? 'rgb(255, 165, 0)' : 'rgb(94, 145, 59)';
@@ -102,7 +135,7 @@ export const Navbar = () => {
           </ScrollLink>
         </nav>
         <div style={{ display: 'flex', gap: '1rem'}}>
-          <button style={{ 
+          <button onClick={handleJoinWaitlist} style={{ 
             padding: '0.8rem 1.5rem', 
             borderRadius: '4px',
             color: 'white', 
@@ -112,9 +145,123 @@ export const Navbar = () => {
             marginRight: '1cm',
             top: '50%', 
             transform: 'translateY(-50%)',
-            right: 0  }}>Join Waitlist</button>
+            right: 0  
+          }}>Join Waitlist</button>
         </div>
       </div>
+
+      {/* Modal for Join Waitlist */}
+      {isModalOpen && (
+        <div style={{
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          right: '0',
+          bottom: '0',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000,
+        }}>
+          <div ref={modalRef} style={{
+            background: 'white',
+            padding: '2rem',
+            borderRadius: '8px',
+            width: '300px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+          }}>
+            <h2 style={{ 
+              marginBottom: '1rem', 
+              textAlign: 'center', 
+              fontSize: '1.2rem', 
+              color: 'rgb(94, 145, 59)'
+            }}>Join Waitlist</h2>
+            <form onSubmit={handleSubmit}>
+              <div style={{ marginBottom: '1rem' }}>
+                <label>
+                  First Name:
+                  <div style={{
+                    border: '2px solid rgb(94, 145, 59)', // Green outline
+                    padding: '0.5rem',
+                    borderRadius: '4px',
+                    height: '40px', // Set height to match the button
+                  }}>
+                    <input 
+                      type="text" 
+                      required 
+                      style={{ 
+                        width: '100%', 
+                        padding: '0.5rem', 
+                        border: 'none', 
+                        height: '100%', 
+                        outline: 'none',
+                        backgroundColor: 'transparent' // Make background transparent
+                      }} 
+                    />
+                  </div>
+                </label>
+              </div>
+              <div style={{ marginBottom: '1rem' }}>
+                <label>
+                  Last Name:
+                  <div style={{
+                    border: '2px solid rgb(94, 145, 59)', // Green outline
+                    padding: '0.5rem',
+                    borderRadius: '4px',
+                    height: '40px', // Set height to match the button
+                  }}>
+                    <input 
+                      type="text" 
+                      required 
+                      style={{ 
+                        width: '100%', 
+                        padding: '0.5rem', 
+                        border: 'none', 
+                        height: '100%', 
+                        outline: 'none',
+                        backgroundColor: 'transparent' // Make background transparent
+                      }} 
+                    />
+                  </div>
+                </label>
+              </div>
+              <div style={{ marginBottom: '1rem' }}>
+                <label>
+                  Email:
+                  <div style={{
+                    border: '2px solid rgb(94, 145, 59)', // Green outline
+                    padding: '0.5rem',
+                    borderRadius: '4px',
+                    height: '40px', // Set height to match the button
+                  }}>
+                    <input 
+                      type="email" 
+                      required 
+                      style={{ 
+                        width: '100%', 
+                        padding: '0.5rem', 
+                        border: 'none', 
+                        height: '100%', 
+                        outline: 'none',
+                        backgroundColor: 'transparent' // Make background transparent
+                      }} 
+                    />
+                  </div>
+                </label>
+              </div>
+              <button type="submit" style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: 'rgb(94, 145, 59)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                width: '100%',
+              }}>Submit</button>
+            </form>
+          </div>
+        </div>
+      )}
     </header>
   )
 }
