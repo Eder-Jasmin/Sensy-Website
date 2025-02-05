@@ -9,6 +9,8 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
   const modalRef = useRef<HTMLDivElement | null>(null); // Ref for the modal
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleTextClick = (index: number) => {
     setClickedIndex(index);
@@ -22,10 +24,43 @@ export const Navbar = () => {
     setIsModalOpen(false); // Close the modal
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
-    handleCloseModal(); // Close the modal after submission
+
+    const form = e.currentTarget as HTMLFormElement;
+
+    const formData = {
+      firstName: (form.elements.namedItem('firstName') as HTMLInputElement).value,
+      lastName: (form.elements.namedItem('lastName') as HTMLInputElement).value,
+      email: (form.elements.namedItem('email') as HTMLInputElement).value,
+    };
+
+    try {
+      const response = await fetch('/api/getWaitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const textResponse = await response.text();
+      if (!response.ok) {
+        const errorData = JSON.parse(textResponse);
+        throw new Error(errorData.message || 'Failed to add to waitlist');
+      }
+
+      // Close the popup menu
+      setIsPopupVisible(false);
+
+      // Show success message
+      setSuccessMessage('You have been successfully added to the waitlist');
+      setTimeout(() => {
+        setSuccessMessage(''); // Clear the message after 2 seconds
+      }, 2000);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   useEffect(() => {
@@ -189,6 +224,7 @@ export const Navbar = () => {
                   }}>
                     <input 
                       type="text" 
+                      name="firstName"
                       required 
                       style={{ 
                         width: '100%', 
@@ -213,6 +249,7 @@ export const Navbar = () => {
                   }}>
                     <input 
                       type="text" 
+                      name="lastName"
                       required 
                       style={{ 
                         width: '100%', 
@@ -237,6 +274,7 @@ export const Navbar = () => {
                   }}>
                     <input 
                       type="email" 
+                      name="email"
                       required 
                       style={{ 
                         width: '100%', 
@@ -260,6 +298,13 @@ export const Navbar = () => {
               }}>Submit</button>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* Success message popup */}
+      {successMessage && (
+        <div className="success-popup">
+          {successMessage}
         </div>
       )}
     </header>
