@@ -264,7 +264,7 @@ export function Hero() {
               fontSize: '1.8em',
               marginBottom: '1rem',
             }}>
-              .... our customizable design ensures comfortable and effective training ....
+              ... our customizable design ensures comfortable and effective training ...
             </h2>
           </div>
 

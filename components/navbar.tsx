@@ -50,11 +50,15 @@ export const Navbar = () => {
         throw new Error(errorData.message || 'Failed to add to waitlist');
       }
 
-      // Close the popup menu
-      setIsPopupVisible(false);
-
       // Show success message
       setSuccessMessage('You have been successfully added to the waitlist');
+
+      // Close the waitlist popup after 2 seconds
+      setTimeout(() => {
+        setIsPopupVisible(false); // Close the waitlist popup
+      }, 2000);
+
+      // Clear the success message after 2 seconds
       setTimeout(() => {
         setSuccessMessage(''); // Clear the message after 2 seconds
       }, 2000);
@@ -310,6 +314,5 @@ export const Navbar = () => {
     </header>
   )
 }
-
 export default Navbar;
 
