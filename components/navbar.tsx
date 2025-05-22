@@ -53,6 +53,9 @@ export const Navbar = () => {
       // Show success message
       setSuccessMessage('You have been successfully added to the waitlist');
 
+      // Close the modal immediately after successful submission
+      setIsModalOpen(false);
+
       // Close the waitlist popup after 2 seconds
       setTimeout(() => {
         setIsPopupVisible(false); // Close the waitlist popup
